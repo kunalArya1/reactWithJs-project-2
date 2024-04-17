@@ -21,10 +21,24 @@ const addTodoHandler = () => {
   todoInput.value = "";
 };
 
-
 window.removeTodoHandler = (index) => {
   store.dispatch(removeTodos(index));
 };
 
 addButton.addEventListener("click", addTodoHandler);
 
+store.subscribe(() => {
+  console.log(store.getState());
+  updateTodoList();
+});
+
+const updateTodoList = () => {
+  const state = store.getState();
+  todoList.innerHTML = state.todos
+    .map((todo, index) => {
+      return `<li>${todo} <button onclick="removeTodoHandler(${index})">Remove</button></li>`;
+    })
+    .join("");
+};
+
+updateTodoList();
